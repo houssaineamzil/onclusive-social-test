@@ -11,7 +11,9 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { cn } from "@/utils";
 import {
+  BarElement,
   CategoryScale,
   type ChartData,
   Chart as ChartJS,
@@ -23,14 +25,17 @@ import {
   PointElement,
   Title,
 } from "chart.js";
+import { compactInteger } from "humanize-plus";
 import { EllipsisVerticalIcon, InfoIcon } from "lucide-react";
-import { Line } from "react-chartjs-2";
+import React from "react";
+import { Bar, Line } from "react-chartjs-2";
 
 ChartJS.register(
   CategoryScale,
   LinearScale,
   PointElement,
   LineElement,
+  BarElement,
   Title,
   ChartTooltip,
   Legend,
@@ -85,8 +90,8 @@ interface Props {
 
 export const Chart: React.FC<Props> = ({ data }) => {
   return (
-    <div className="flex flex-col">
-      <div className="flex justify-between">
+    <div className="flex flex-1 flex-col">
+      <div className="flex shrink-0 justify-between">
         <div className="font-bold font-dosis text-4xl uppercase leading-none tracking-[1%]">
           Summary
         </div>
@@ -103,22 +108,22 @@ export const Chart: React.FC<Props> = ({ data }) => {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="flex flex-col gap-4">
+      <div className="mb-12 flex shrink-0 flex-col gap-4">
         <div>
           Comparing{" "}
           <span className="font-bold font-dosis">{data.compare.keyword}</span>{" "}
           to{" "}
           {data.compare.with.map((keyword, index) => (
-            <>
+            <React.Fragment key={keyword}>
               {index !== 0 &&
                 (index === data.compare.with.length - 1 ? " and " : ", ")}
               <span key={keyword} className="font-bold font-dosis">
                 {keyword}
               </span>
-            </>
+            </React.Fragment>
           ))}
         </div>
-        <div className="flex font-dosis font-semibold text-xl gap-5">
+        <div className="flex gap-5 font-dosis font-semibold text-xl">
           MENTIONS{" "}
           <TooltipProvider>
             <Tooltip>
@@ -131,12 +136,155 @@ export const Chart: React.FC<Props> = ({ data }) => {
             </Tooltip>
           </TooltipProvider>
         </div>
+
+        <div className="flex w-full">
+          {[
+            {
+              total: 31565295,
+              percentage: 42,
+              keyword: "Iphone",
+              color: "text-blue-500",
+            },
+            {
+              total: 27946196,
+              percentage: 35,
+              keyword: "Vivo",
+              color: "text-green-500",
+            },
+            {
+              total: 20489496,
+              percentage: 22,
+              keyword: "Nokia",
+              color: "text-orange-500",
+            },
+          ].map(({ total, percentage, keyword, color }) => (
+            <div
+              key={keyword}
+              className="flex flex-1 flex-col border-zinc-200 not-first:border-l pl-3"
+            >
+              <div className="font-dosis font-medium text-4xl text-zinc-500">
+                <span className="text-5xl">{compactInteger(total)}</span> /{" "}
+                {percentage}%
+              </div>
+              <div
+                className={cn(
+                  "flex items-baseline gap-2 font-dosis text-sm",
+                  color,
+                )}
+              >
+                <div className="size-3 rounded-full bg-current" />
+                {keyword}
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
-      <div className="flex gap-11.5">
-        <div className="max-w-md">
+      <div className="flex flex-1 items-center gap-11.5">
+        <div className="flex-1">
           <Line options={options} data={data.chart} />
         </div>
-        <div className="flex flex-col gap-4" />
+        <div className="flex w-md flex-col gap-8">
+          {[
+            {
+              title: "Authors",
+              data: {
+                labels: ["", "", ""],
+                datasets: [
+                  {
+                    label: "Authors",
+                    data: [10000000, 14000000, 5200000],
+                    barThickness: 3,
+                    backgroundColor: [
+                      "hsl(212, 58%, 62%)",
+                      "hsl(126, 67%, 38%)",
+                      "hsl(5, 100%, 65%)",
+                    ],
+                  },
+                ],
+              },
+            },
+            {
+              title: "Mentions",
+              data: {
+                labels: ["", "", ""],
+                datasets: [
+                  {
+                    label: "Mentions",
+                    data: [5000000, 4000000, 2000000],
+                    barThickness: 3,
+                    backgroundColor: [
+                      "hsl(212, 58%, 62%)",
+                      "hsl(126, 67%, 38%)",
+                      "hsl(5, 100%, 65%)",
+                    ],
+                  },
+                ],
+              },
+            },
+            {
+              title: "Reach",
+              data: {
+                labels: ["", "", ""],
+                datasets: [
+                  {
+                    label: "Reach",
+                    data: [14000000, 14800000, 4500000],
+                    barThickness: 3,
+                    backgroundColor: [
+                      "hsl(212, 58%, 62%)",
+                      "hsl(126, 67%, 38%)",
+                      "hsl(5, 100%, 65%)",
+                    ],
+                  },
+                ],
+              },
+            },
+          ].map(({ title, data }) => (
+            <div key={title} className="flex flex-col gap-3">
+              <div className="flex items-center gap-2 font-dosis font-semibold text-4xl text-zinc-500">
+                {title}
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <InfoIcon className="size-4 text-current/60" />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Some info should be shown here</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              </div>
+              <div className="flex max-h-24 items-baseline gap-2">
+                <Bar
+                  options={{
+                    indexAxis: "y",
+                    maintainAspectRatio: false,
+                    responsive: true,
+                    scales: {
+                      x: {
+                        display: false,
+                      },
+                      y: {
+                        grid: {
+                          display: false,
+                        },
+                      },
+                    },
+                    plugins: {
+                      legend: {
+                        display: false,
+                      },
+                      tooltip: {
+                        enabled: false,
+                      },
+                    },
+                  }}
+                  data={data}
+                />
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

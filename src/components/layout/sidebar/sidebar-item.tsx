@@ -16,7 +16,6 @@ export const SidebarItem: React.FC<SidebarItemProps> = ({
 }) => {
   const searchParams = useSearchParams();
   const queries = Object.fromEntries(searchParams);
-
   const [active, setActive] = useState(false);
 
   useEffect(() => {

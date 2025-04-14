@@ -9,7 +9,7 @@ import { FilterProvider } from "@/hooks/useFilter";
 import { cn, random } from "@/utils";
 import { PlusIcon, XIcon } from "lucide-react";
 import type { NextPage } from "next";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 
 const colors = [
   "bg-violet-400",
@@ -86,7 +86,7 @@ const Page: NextPage = () => {
           <TabsTrigger
             key={id}
             value={id}
-            className="-tracking-[1%] shrink-0 flex h-12.5 w-60 items-center gap-3 rounded-none border-zinc-200 border-r p-2 font-medium text-sm text-zinc-700 capitalize leading-none first:border-l"
+            className="-tracking-[1%] flex h-12.5 w-60 shrink-0 items-center gap-3 rounded-none border-zinc-200 border-r p-2 font-medium text-sm text-zinc-700 capitalize leading-none first:border-l"
           >
             {color && !Icon && (
               <span className={cn("size-3 rounded-full ", color)} />
@@ -115,9 +115,11 @@ const Page: NextPage = () => {
           <TabsContent className="flex flex-col" key={id} value={id}>
             <Filter />
             <main className="flex flex-1">
-              <Sidebar />
+              <Suspense>
+                <Sidebar />
+              </Suspense>
               <div className="flex flex-1 pt-6 pr-6">
-                <div className="flex-1 bg-white px-8 py-4 shadow-lg">
+                <div className="flex flex-1 bg-white px-8 py-4 shadow-lg">
                   <Content data={data} />
                 </div>
               </div>
