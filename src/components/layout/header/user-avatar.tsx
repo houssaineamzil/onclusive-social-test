@@ -1,4 +1,3 @@
-import { avatar } from "@/assets";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -6,15 +5,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { user } from "@/constants";
 import type React from "react";
-
-// Todo: fetch real data
-const user = {
-  name: "John Doe",
-  username: "johndoe",
-  avatar: avatar,
-  email: "john.doe@example.com",
-};
 
 export const UserAvatar: React.FC = () => {
   return (

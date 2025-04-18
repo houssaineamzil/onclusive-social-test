@@ -11,7 +11,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { cn } from "@/utils";
+import { engagementData, summaryChartData } from "@/constants";
 import {
   BarElement,
   CategoryScale,
@@ -138,26 +138,7 @@ export const Chart: React.FC<Props> = ({ data }) => {
         </div>
 
         <div className="flex w-full">
-          {[
-            {
-              total: 31565295,
-              percentage: 42,
-              keyword: "Iphone",
-              color: "text-blue-500",
-            },
-            {
-              total: 27946196,
-              percentage: 35,
-              keyword: "Vivo",
-              color: "text-green-500",
-            },
-            {
-              total: 20489496,
-              percentage: 22,
-              keyword: "Nokia",
-              color: "text-orange-500",
-            },
-          ].map(({ total, percentage, keyword, color }) => (
+          {engagementData.map(({ total, percentage, keyword, color }) => (
             <div
               key={keyword}
               className="flex flex-1 flex-col border-zinc-200 not-first:border-l pl-3"
@@ -167,10 +148,8 @@ export const Chart: React.FC<Props> = ({ data }) => {
                 {percentage}%
               </div>
               <div
-                className={cn(
-                  "flex items-baseline gap-2 font-dosis text-sm",
-                  color,
-                )}
+                className="flex items-baseline gap-2 font-dosis text-sm"
+                style={{ color }}
               >
                 <div className="size-3 rounded-full bg-current" />
                 {keyword}
@@ -184,62 +163,7 @@ export const Chart: React.FC<Props> = ({ data }) => {
           <Line options={options} data={data.chart} />
         </div>
         <div className="flex w-md flex-col gap-8">
-          {[
-            {
-              title: "Authors",
-              data: {
-                labels: ["", "", ""],
-                datasets: [
-                  {
-                    label: "Authors",
-                    data: [10000000, 14000000, 5200000],
-                    barThickness: 3,
-                    backgroundColor: [
-                      "hsl(212, 58%, 62%)",
-                      "hsl(126, 67%, 38%)",
-                      "hsl(5, 100%, 65%)",
-                    ],
-                  },
-                ],
-              },
-            },
-            {
-              title: "Mentions",
-              data: {
-                labels: ["", "", ""],
-                datasets: [
-                  {
-                    label: "Mentions",
-                    data: [5000000, 4000000, 2000000],
-                    barThickness: 3,
-                    backgroundColor: [
-                      "hsl(212, 58%, 62%)",
-                      "hsl(126, 67%, 38%)",
-                      "hsl(5, 100%, 65%)",
-                    ],
-                  },
-                ],
-              },
-            },
-            {
-              title: "Reach",
-              data: {
-                labels: ["", "", ""],
-                datasets: [
-                  {
-                    label: "Reach",
-                    data: [14000000, 14800000, 4500000],
-                    barThickness: 3,
-                    backgroundColor: [
-                      "hsl(212, 58%, 62%)",
-                      "hsl(126, 67%, 38%)",
-                      "hsl(5, 100%, 65%)",
-                    ],
-                  },
-                ],
-              },
-            },
-          ].map(({ title, data }) => (
+          {summaryChartData.map(({ title, data }) => (
             <div key={title} className="flex flex-col gap-3">
               <div className="flex items-center gap-2 font-dosis font-semibold text-4xl text-zinc-500">
                 {title}

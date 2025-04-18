@@ -7,15 +7,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { spaces } from "@/constants";
 import React from "react";
-
-// Todo: fetch real data
-const spaces = [
-  {
-    id: "historical",
-    name: "Historical Search",
-  },
-];
 
 export const SelectSpace: React.FC = () => {
   const [space, setSpace] = React.useState("historical");

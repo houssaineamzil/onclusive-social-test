@@ -6,16 +6,26 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
+import { ages, languages, mediaTypes } from "@/constants";
+import { countries } from "@/constants/countries";
+import { useFilter } from "@/hooks/useFilter";
 import { ChevronDownIcon, ChevronUpIcon, FilterIcon } from "lucide-react";
 import { useState } from "react";
-import { SelectAge } from "./select-age";
-import { SelectCountries } from "./select-countries";
+import { SelectField } from "./select";
 import { SelectDate } from "./select-date";
-import { SelectLang } from "./select-lang";
-import { SelectMediaType } from "./select-mediaType";
 
 export const Filter: React.FC = () => {
   const [open, setOpen] = useState(false);
+  const {
+    language,
+    setLanguage,
+    age,
+    setAge,
+    country,
+    setCountry,
+    mediaType,
+    setMediaType,
+  } = useFilter();
 
   return (
     <Collapsible
@@ -34,10 +44,40 @@ export const Filter: React.FC = () => {
         </CollapsibleTrigger>
       </div>
       <CollapsibleContent className="flex w-full gap-10 pt-2">
-        <SelectLang />
-        <SelectMediaType />
-        <SelectCountries />
-        <SelectAge />
+        <SelectField
+          label="Language"
+          name="language"
+          value={language}
+          options={languages}
+          onChange={setLanguage}
+        />
+        <SelectField
+          label="Media Type"
+          name="mediaType"
+          value={mediaType}
+          options={mediaTypes}
+          onChange={setMediaType}
+        />
+        <SelectField
+          label="Country"
+          name="country"
+          value={country}
+          options={[
+            {
+              id: "all",
+              name: "All countries",
+            },
+            ...countries,
+          ]}
+          onChange={setCountry}
+        />
+        <SelectField
+          label="Age"
+          name="age"
+          value={age}
+          options={ages}
+          onChange={setAge}
+        />
       </CollapsibleContent>
     </Collapsible>
   );

@@ -10,7 +10,6 @@ import {
   UsersIcon,
 } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useCallback } from "react";
 import { SidebarGroup } from "./sidebar-group";
 import { SidebarItem } from "./sidebar-item";
 
@@ -113,24 +112,17 @@ export const Sidebar: React.FC = () => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const createQueryString = useCallback(
-    (name: string, value: string) => {
-      const params = new URLSearchParams(searchParams.toString());
-      params.set(name, value);
+  const createQueryString = (name: string, value: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set(name, value);
 
-      return params.toString();
-    },
-    [searchParams],
-  );
+    return params.toString();
+  };
 
   return (
     <div className="flex w-64 shrink-0 flex-col gap-2 py-4 pr-4.5 pl-2.5">
-      {sidebar.map(({ name, items }, index) => (
-        <SidebarGroup
-          key={name}
-          title={name}
-          last={index === sidebar.length - 1}
-        >
+      {sidebar.map(({ name, items }) => (
+        <SidebarGroup key={name} title={name}>
           <div className="flex flex-col gap-1">
             {items.map(({ icon: Icon, name }) => {
               const tabName = name.replaceAll(" ", "-").toLowerCase();
