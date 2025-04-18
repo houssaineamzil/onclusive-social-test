@@ -88,9 +88,9 @@ const Page: NextPage = () => {
             value={id}
             className="-tracking-[1%] flex h-12.5 w-60 shrink-0 items-center gap-3 rounded-none border-zinc-200 border-r p-2 font-medium text-sm text-zinc-700 capitalize leading-none first:border-l"
           >
-            {/* {color && !Icon && (
+            {color && !Icon && (
               <span className={cn("size-3 rounded-full ", color)} />
-            )} */}
+            )}
             {Icon && <Icon />}
             <span className="flex-1 text-left">{label}</span>
 
